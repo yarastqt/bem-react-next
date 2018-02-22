@@ -27,7 +27,10 @@ export class BemComponent extends Component {
     const className = this.__buildClassName({
       block: this.__getBlock(),
       elem: this.elem,
-      mods: this.mods(this.props, this.state),
+      mods: {
+        ...this.__defaultMods,
+        ...this.mods(this.props, this.state)
+      },
     })
 
     return createElement(this.tag, {

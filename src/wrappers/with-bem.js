@@ -22,9 +22,9 @@ export function withBEM(BaseComponent, ...mods) {
      * @internal
      */
     __createBemComponent(mods, props) {
-      const matchedMods = this.__getMatchedMods(mods, props)
-      const defaultProps = this.__getDefaultProps(BaseComponent, matchedMods)
-      const BemComponent = this.__getBemComponent(BaseComponent, matchedMods)
+      const { components, list } = this.__getMatchedMods(mods, props)
+      const defaultProps = this.__getDefaultProps(BaseComponent, components)
+      const BemComponent = this.__getBemComponent(BaseComponent, components, list)
 
       this.component = (
         <BemComponent
@@ -38,7 +38,10 @@ export function withBEM(BaseComponent, ...mods) {
      * @internal
      */
     __getMatchedMods(mods, props) {
-      const matchedMods = []
+      const matchedMods = {
+        components: [],
+        list: {},
+      }
 
       if (mods.lenghth === 0) {
         return null
@@ -53,7 +56,11 @@ export function withBEM(BaseComponent, ...mods) {
 
         for (const key in props) {
           if (props[key] === matcher[key]) {
-            matchedMods.push(mod)
+            matchedMods.components.push(mod)
+            matchedMods.list = {
+              ...matchedMods.list,
+              [key]: props[key],
+            }
           }
         }
       }
@@ -78,8 +85,13 @@ export function withBEM(BaseComponent, ...mods) {
     /**
      * @internal
      */
-    __getBemComponent(BaseComponent, mods) {
-      return class BemComponent extends block(BaseComponent).withMods(...mods) {}
+    __getBemComponent(BaseComponent, modsComponents, defaultMods) {
+      return class BemComponent extends block(BaseComponent).withMods(...modsComponents) {
+        constructor(props, context) {
+          super(props, context)
+          this.__defaultMods = defaultMods
+        }
+      }
     }
   }
 }
