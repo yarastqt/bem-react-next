@@ -13,7 +13,6 @@ export class BemComponent extends Component {
     super(props, context)
     this.tag = 'div'
     this.block = null
-    this.elem = null
   }
 
   getChildContext() {
@@ -98,10 +97,12 @@ export class BemComponent extends Component {
     const modsClassName = Object
       .keys(mods)
       .map((name) => {
-        if (mods[name] !== undefined) {
+        const value = mods[name]
+
+        if (value !== false && value !== undefined) {
           return stringify({
             block,
-            mod: { name, val: mods[name] },
+            mod: { name, val: value },
           })
         }
       })
