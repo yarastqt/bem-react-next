@@ -4,6 +4,9 @@
   "parserOptions": {
     "ecmaVersion": 2017
   },
+  "env": {
+    "jest": true
+  },
   "rules": {
     "no-underscore-dangle": "off",
     "no-restricted-syntax": "off",
