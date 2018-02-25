@@ -1,5 +1,5 @@
 {
-  "name": "react-bem-next",
+  "name": "bem-react-next",
   "version": "0.1.0-alpha",
   "main": "./lib/index.js",
   "scripts": {

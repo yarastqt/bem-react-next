@@ -1,1 +1,1 @@
-# React BEM next
+# BEM react next

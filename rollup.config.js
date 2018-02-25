@@ -6,7 +6,7 @@ import commonJs from 'rollup-plugin-commonjs'
 export const config = {
   entry: 'src/index.js',
   format: 'umd',
-  moduleName: 'react-bem-next',
+  moduleName: 'bem-react-next',
   plugins: [
     nodeResolve(),
     babel({
