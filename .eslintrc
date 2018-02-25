@@ -1,0 +1,12 @@
+{
+  "extends": "@atomix/eslint-config-react",
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 2017
+  },
+  "rules": {
+    "no-underscore-dangle": "off",
+    "no-restricted-syntax": "off",
+    "class-methods-use-this": "off"
+  }
+}
