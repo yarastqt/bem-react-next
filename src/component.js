@@ -4,6 +4,28 @@ import { stringify } from '@bem/sdk.naming.entity'
 import { isNil, trim } from 'ramda'
 
 
+function buildClassName({ block, elem, mods }) {
+  const baseClassName = stringify({ block, elem: elem || undefined })
+  const modsClassName = Object
+    .keys(mods)
+    .map((name) => {
+      const value = mods[name]
+
+      if (value !== false && value !== undefined) {
+        return stringify({
+          block,
+          mod: { name, val: value },
+        })
+      }
+
+      return false
+    })
+    .filter(Boolean)
+    .join(' ')
+
+  return trim(`${baseClassName} ${modsClassName}`)
+}
+
 export class BemComponent extends Component {
   static childContextTypes = {
     block: string.isRequired,
@@ -13,31 +35,13 @@ export class BemComponent extends Component {
     super(props, context)
     this.tag = 'div'
     this.block = null
+    this.__defaultMods = {}
   }
 
   getChildContext() {
     return {
       block: this.block || '',
     }
-  }
-
-  render() {
-    const children = this.content(this.props, this.state)
-    const attrs = this.attrs(this.props, this.state)
-    const className = this.__buildClassName({
-      block: this.__getBlock(),
-      elem: this.elem,
-      mods: {
-        ...this.__defaultMods,
-        ...this.mods(this.props, this.state)
-      },
-    })
-
-    return createElement(this.tag, {
-      ...attrs,
-      children,
-      className,
-    })
   }
 
   /**
@@ -58,7 +62,7 @@ export class BemComponent extends Component {
    * @param {object} state
    * @returns {object}
    */
-  mods(props, state) {
+  mods() {
     return {}
   }
 
@@ -69,7 +73,7 @@ export class BemComponent extends Component {
    * @param {object} state
    * @returns {object}
    */
-  attrs(props, state) {
+  attrs() {
     return {}
   }
 
@@ -92,26 +96,22 @@ export class BemComponent extends Component {
     return this.block || this.context.block
   }
 
-  /**
-   * @internal
-   */
-  __buildClassName({ block, elem, mods }) {
-    const baseClassName = stringify({ block, elem: elem || undefined })
-    const modsClassName = Object
-      .keys(mods)
-      .map((name) => {
-        const value = mods[name]
+  render() {
+    const children = this.content(this.props, this.state)
+    const attrs = this.attrs(this.props, this.state)
+    const className = buildClassName({
+      block: this.__getBlock(),
+      elem: this.elem,
+      mods: {
+        ...this.__defaultMods,
+        ...this.mods(this.props, this.state),
+      },
+    })
 
-        if (value !== false && value !== undefined) {
-          return stringify({
-            block,
-            mod: { name, val: value },
-          })
-        }
-      })
-      .filter(Boolean)
-      .join(' ')
-
-    return trim(`${baseClassName} ${modsClassName}`)
+    return createElement(this.tag, {
+      ...attrs,
+      children,
+      className,
+    })
   }
 }
