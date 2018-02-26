@@ -54,7 +54,7 @@ function getMatchedMods(mods, props) {
   return matchedMods
 }
 
-export function withBEM(BaseComponent, ...mods) {
+export function withMods(BaseComponent, ...mods) {
   return class BemEnhancedComponent extends PureComponent {
     constructor(props, context) {
       super(props, context)

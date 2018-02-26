@@ -1,1 +1,1 @@
-export * from './with-bem'
+export * from './with-mods'
