@@ -6,7 +6,7 @@ class BlockBuilder {
     this.__BaseComponent = BaseComponent
   }
 
-  withMods(...mods) {
+  mods(...mods) {
     if (mods.length === 0) {
       return this.__BaseComponent
     }

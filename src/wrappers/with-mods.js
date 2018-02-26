@@ -15,7 +15,7 @@ function getDefaultProps(BaseComponent, mods) {
 }
 
 function getBemComponent(BaseComponent, modsComponents, defaultMods) {
-  return class BemComponent extends block(BaseComponent).withMods(...modsComponents) {
+  return class BemComponent extends block(BaseComponent).mods(...modsComponents) {
     constructor(props, context) {
       super(props, context)
       this.__defaultMods = defaultMods
