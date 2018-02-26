@@ -3,6 +3,7 @@ import { string } from 'prop-types'
 import { isNil } from 'ramda'
 
 import { buildClassName } from './utils/class-name-builder'
+import { uuid } from './utils/uuid'
 
 
 export class BemComponent extends Component {
@@ -14,6 +15,8 @@ export class BemComponent extends Component {
     super(props, context)
     this.tag = 'div'
     this.block = null
+    this.uuid = uuid()
+    // Internals properties
     this.__defaultMods = {}
   }
 
