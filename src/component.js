@@ -1,5 +1,5 @@
-import React, { Component, createElement } from 'react'
-import { string } from 'prop-types'
+import { Component, createElement } from 'react'
+import { string, node } from 'prop-types'
 import { isNil } from 'ramda'
 
 import { buildClassName } from './utils/class-name-builder'
@@ -9,6 +9,14 @@ import { uuid } from './utils/uuid'
 export class BemComponent extends Component {
   static childContextTypes = {
     block: string.isRequired,
+  }
+
+  static propTypes = {
+    children: node,
+  }
+
+  static defaultProps = {
+    children: null,
   }
 
   constructor(props, context) {
@@ -28,12 +36,11 @@ export class BemComponent extends Component {
 
   /**
    * Return content as react children
-   *
-   * @param {object} props
-   * @param {object} state
    * @returns {object}
    */
-  content({children}) {
+  content() {
+    const { children } = this.props
+
     return children
   }
 
