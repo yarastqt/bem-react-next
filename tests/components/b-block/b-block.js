@@ -8,6 +8,12 @@ export class BBlock extends BemComponent {
     this.tag = 'a'
   }
 
+  attrs() {
+    return {
+      id: this.uuid,
+    }
+  }
+
   content({ children }) {
     return ['content', children]
   }
