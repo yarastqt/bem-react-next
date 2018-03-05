@@ -4,6 +4,7 @@ import { Bem } from 'bem-react-next'
 
 import { ABlock } from './components/a-block/a-block'
 import { BBlock } from './components/b-block/b-block'
+import { CBlock } from './components/c-block/c-block'
 
 
 describe('Entity without declaration', () => {
@@ -93,6 +94,15 @@ describe('Entity with declaration', () => {
     })
   })
 
-  // TODO: Implement this test-case
-  it.skip('Should have declared style')
+  it('Should have declared style', () => {
+    const wrapper = shallow((
+      <CBlock />
+    ))
+
+    expect(wrapper.prop('style')).toMatchObject({
+      font: 'bold',
+      color: 'red',
+      background: 'blue',
+    })
+  })
 })
