@@ -67,6 +67,17 @@ export class BemComponent extends Component {
   }
 
   /**
+   * Return DOM node styles
+   *
+   * @param {object} props
+   * @param {object} state
+   * @returns {object}
+   */
+  styles() {
+    return {}
+  }
+
+  /**
    * @internal
    */
   __getBlock() {
@@ -88,6 +99,13 @@ export class BemComponent extends Component {
   render() {
     const children = this.content(this.props, this.state)
     const attrs = this.attrs(this.props, this.state)
+    const styles = this.styles(this.props, this.state)
+    const advancedAttrs = {
+      ...attrs, style: {
+        ...attrs.style,
+        ...styles,
+      },
+    }
     const className = buildClassName({
       block: this.__getBlock(),
       elem: this.elem,
@@ -98,7 +116,7 @@ export class BemComponent extends Component {
     })
 
     return createElement(this.tag, {
-      ...attrs,
+      ...advancedAttrs,
       children,
       className,
     })
