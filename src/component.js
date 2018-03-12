@@ -24,8 +24,7 @@ export class BemComponent extends Component {
     this.tag = 'div'
     this.block = null
     this.uuid = uuid()
-    // Internals properties
-    this.__defaultMods = {}
+    this._defaultMods = {}
   }
 
   getChildContext() {
@@ -110,7 +109,7 @@ export class BemComponent extends Component {
       block: this.__getBlock(),
       elem: this.elem,
       mods: {
-        ...this.__defaultMods,
+        ...this._defaultMods,
         ...this.mods(this.props, this.state),
       },
     })
