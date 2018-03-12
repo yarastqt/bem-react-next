@@ -3,86 +3,92 @@ import React, { PureComponent } from 'react'
 import { block, noop } from '../utils'
 
 
-function getDefaultProps(BaseComponent, mods) {
-  return mods.reduce((acc, mod) => {
-    const { defaultProps } = mod(noop)
-
-    return {
-      ...acc,
-      ...defaultProps,
-    }
-  }, BaseComponent.defaultProps)
-}
-
 function getBemComponent(BaseComponent, modsComponents, defaultMods) {
   return class BemComponent extends block(BaseComponent).mods(...modsComponents) {
     constructor(props, context) {
       super(props, context)
-      this.__defaultMods = defaultMods
+      this._defaultMods = defaultMods
     }
   }
 }
 
 function getMatchedMods(mods, props) {
-  const matchedMods = {
-    components: [],
-    list: {},
-  }
+  const defaultMods = {}
+  const matchedMods = new Set()
 
   if (mods.lenghth === 0) {
-    return null
+    return {
+      defaultMods,
+      matchedMods: [],
+    }
   }
 
   for (const mod of mods) {
-    const { matcher } = mod(noop)
+    const { predicate } = mod(noop)
 
-    if (matcher === undefined) {
+    if (predicate === undefined) {
       throw new Error(`Predicate for mod ${mod.name} not exists.`)
     }
 
     for (const key in props) {
-      if (props[key] === matcher[key]) {
-        matchedMods.components.push(mod)
-        matchedMods.list = {
-          ...matchedMods.list,
-          [key]: props[key],
-        }
+      if (
+        props[key] === predicate[key]
+        && props[key] !== undefined
+        && predicate[key] !== undefined
+      ) {
+        matchedMods.add(mod)
+        defaultMods[key] = props[key]
       }
     }
   }
 
-  return matchedMods
+  return {
+    defaultMods,
+    matchedMods: Array.from(matchedMods),
+  }
 }
 
 export function withMods(BaseComponent, ...mods) {
   return class BemEnhancedComponent extends PureComponent {
     constructor(props, context) {
       super(props, context)
-      this.__createBemComponent(props)
+      const { defaultMods, matchedMods } = getMatchedMods(mods, props)
+
+      this._createBemComponent(props, defaultMods, matchedMods)
     }
 
-    componentWillReceiveProps(props) {
-      this.__createBemComponent(props)
+    componentWillReceiveProps(nextProps) {
+      // Create new bem component if matched mods will be changed
+      const { defaultMods, matchedMods } = getMatchedMods(mods, nextProps)
+      const unchangedModsLength = this._prevMatchedMods.length === matchedMods.length
+      const unchangedMods = this._prevMatchedMods.every((value) => (
+        matchedMods.includes(value)
+      ))
+
+      if (!unchangedModsLength || !unchangedMods) {
+        this._createBemComponent(nextProps, defaultMods, matchedMods)
+      }
     }
 
     /**
-     * @internal
+     * Create BEM component
+     * @private
+     *
+     * @param {Object} props
+     * @param {Function[]} defaultMods
+     * @param {Object} matchedMods
      */
-    __createBemComponent(props) {
-      const { components, list } = getMatchedMods(mods, props)
-      const defaultProps = getDefaultProps(BaseComponent, components)
-      const BemComponent = getBemComponent(BaseComponent, components, list)
-
-      this.component = (
-        <BemComponent
-          {...defaultProps}
-          {...props}
-        />
-      )
+    _createBemComponent(props, defaultMods, matchedMods) {
+      this._prevMatchedMods = matchedMods
+      this._BemComponent = getBemComponent(BaseComponent, matchedMods, defaultMods)
     }
 
     render() {
-      return this.component
+      const { props, _BemComponent: BemComponent } = this
+
+      return (
+        <BemComponent {...props} />
+      )
     }
   }
 }
