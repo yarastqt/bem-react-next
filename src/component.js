@@ -32,6 +32,13 @@ export class BemComponent extends Component {
     }
   }
 
+  /**
+   * Return HTML tag
+   *
+   * @param {object} props
+   * @param {object} state
+   * @returns {string}
+   */
   tag() {
     return 'div'
   }
