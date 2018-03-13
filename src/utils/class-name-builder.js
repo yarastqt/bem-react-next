@@ -3,7 +3,7 @@ import { trim } from 'ramda'
 
 
 export function buildClassName({ block, elem, mods }) {
-  const baseClassName = stringify({ block, elem: elem || undefined })
+  const baseClassName = stringify({ block, elem })
   const modsClassName = Object
     .keys(mods)
     .map((name) => {
