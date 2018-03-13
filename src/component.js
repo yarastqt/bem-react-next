@@ -21,7 +21,6 @@ export class BemComponent extends Component {
 
   constructor(props, context) {
     super(props, context)
-    this.tag = 'div'
     this.block = null
     this.uuid = uuid()
     this._defaultMods = {}
@@ -31,6 +30,10 @@ export class BemComponent extends Component {
     return {
       block: this.block || '',
     }
+  }
+
+  tag() {
+    return 'div'
   }
 
   /**
@@ -96,6 +99,7 @@ export class BemComponent extends Component {
   }
 
   render() {
+    const tag = this.tag(this.props, this.state)
     const children = this.content(this.props, this.state)
     const attrs = this.attrs(this.props, this.state)
     const styles = this.styles(this.props, this.state)
@@ -114,7 +118,7 @@ export class BemComponent extends Component {
       },
     })
 
-    return createElement(this.tag, {
+    return createElement(tag, {
       ...advancedAttrs,
       children,
       className,
