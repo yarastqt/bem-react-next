@@ -12,6 +12,7 @@ export function buildClassName({ block, elem, mods }) {
       if (value !== false && value !== undefined) {
         return stringify({
           block,
+          elem,
           mod: { name, val: value },
         })
       }
