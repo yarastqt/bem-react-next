@@ -32,9 +32,9 @@ function getMatchedMods(mods, props) {
 
     for (const key in props) {
       if (
-        props[key] === predicate[key]
-        && props[key] !== undefined
-        && predicate[key] !== undefined
+        props[key] === predicate[key] &&
+        props[key] !== undefined &&
+        predicate[key] !== undefined
       ) {
         matchedMods.add(mod)
         defaultMods[key] = props[key]
