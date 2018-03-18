@@ -1,6 +1,6 @@
 {
   "name": "bem-react-next",
-  "version": "0.1.1-alpha",
+  "version": "0.1.0-alpha",
   "main": "./lib/index.js",
   "scripts": {
     "build:commonjs": "BABEL_ENV=commonjs babel src --out-dir lib",
