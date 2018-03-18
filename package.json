@@ -1,11 +1,18 @@
 {
   "name": "bem-react-next",
-  "version": "0.1.0-alpha",
+  "version": "0.1.1-alpha",
   "main": "./lib/index.js",
   "scripts": {
     "build:commonjs": "BABEL_ENV=commonjs babel src --out-dir lib",
+    "test": "npm run test:lint && npm run test:js",
     "test:lint": "eslint src",
     "test:js": "jest"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run test:lint",
+      "pre-push": "npm run test"
+    }
   },
   "keywords": [
     "bem",
@@ -33,6 +40,7 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.18.1",
     "eslint-plugin-jest": "^21.12.2",
+    "husky": "^0.15.0-rc.12",
     "jest": "^22.4.2",
     "react-dom": "^16.2.0",
     "rollup": "^0.55.4",
