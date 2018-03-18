@@ -10,6 +10,15 @@
   "rules": {
     "no-underscore-dangle": "off",
     "no-restricted-syntax": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "operator-linebreak": ["error", "before", {
+      "overrides": {
+        "?": "before",
+        ":": "before",
+        "+": "after",
+        "&&": "after",
+        "||": "after"
+      }
+    }]
   }
 }
