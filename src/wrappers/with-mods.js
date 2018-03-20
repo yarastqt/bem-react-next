@@ -44,7 +44,7 @@ function getMatchedMods(mods, props) {
 
   return {
     defaultMods,
-    matchedMods: Array.from(matchedMods),
+    matchedMods: [...matchedMods],
   }
 }
 
