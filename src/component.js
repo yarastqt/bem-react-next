@@ -1,5 +1,5 @@
 import { Component, createElement } from 'react'
-import { string, node } from 'prop-types'
+import { node } from 'prop-types'
 import { isNil } from 'ramda'
 
 import { buildClassName } from './utils/class-name-builder'
@@ -7,10 +7,6 @@ import { uuid } from './utils/uuid'
 
 
 export class BemComponent extends Component {
-  static childContextTypes = {
-    block: string.isRequired,
-  }
-
   static propTypes = {
     children: node,
   }
@@ -24,12 +20,6 @@ export class BemComponent extends Component {
     this.block = null
     this.uuid = uuid()
     this._defaultMods = {}
-  }
-
-  getChildContext() {
-    return {
-      block: this.block || '',
-    }
   }
 
   /**
@@ -90,19 +80,11 @@ export class BemComponent extends Component {
    * @internal
    */
   __getBlock() {
-    if (isNil(this.elem)) {
-      if (isNil(this.block)) {
-        throw new Error('Block property not exists.')
-      }
-
-      return this.block
-    }
-
-    if (isNil(this.block) && isNil(this.context.block)) {
+    if (isNil(this.block)) {
       throw new Error('Block property not exists.')
     }
 
-    return this.block || this.context.block
+    return this.block
   }
 
   render() {
