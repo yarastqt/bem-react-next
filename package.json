@@ -18,6 +18,10 @@
     "bem",
     "react"
   ],
+  "files": [
+    "lib",
+    "src"
+  ],
   "license": "MIT",
   "dependencies": {
     "@bem/sdk.naming.entity": "^0.2.4",
